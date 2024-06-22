@@ -24,20 +24,20 @@ class ServiceDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            
-            ->editColumn('region_id' , function ( $service ) {
+
+            ->editColumn('region_id', function ($service) {
                 return $service->region_id != null ? optional($service->region)->name : '';
             })
 
-            ->filterColumn('region_id', function( $query, $keyword ){
-                $query->whereHas('region', function ($q) use($keyword){
-                    $q->where('name', 'like' , '%'.$keyword.'%');
+            ->filterColumn('region_id', function ($query, $keyword) {
+                $query->whereHas('region', function ($q) use ($keyword) {
+                    $q->where('name', 'like', '%' . $keyword . '%');
                 });
             })
 
             ->addIndexColumn()
             ->addColumn('action', 'service.action')
-            ->rawColumns([ 'action' ]);
+            ->rawColumns(['action']);
     }
 
     /**
@@ -65,15 +65,15 @@ class ServiceDataTable extends DataTable
                 ->title(__('message.srno'))
                 ->orderable(false)
                 ->width(60),
-            Column::make('name')->title( __('message.name') ),
-            Column::make('region_id')->title( __('message.region') ),
-            Column::make('base_fare')->title( __('message.base_fare') ),
-            Column::make('minimum_fare')->title( __('message.minimum_fare') ),
+            Column::make('name')->title(__('message.name')),
+            Column::make('region_id')->title(__('message.region')),
+            Column::make('base_fare')->title(__('message.base_fare')),
+            Column::make('minimum_fare')->title(__('message.minimum_fare')),
             Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
+                ->exportable(false)
+                ->printable(false)
+                ->width(60)
+                ->addClass('text-center'),
         ];
     }
 

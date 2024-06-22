@@ -189,7 +189,7 @@ class RideRequestController extends Controller
         ];
         RideRequest::create($data);
         $message = __('message.save_form', ['form' => __('message.riderequest')]);
-        return redirect()->route('riderequest.index')->withSuccess($message);
+        return redirect()->route('rent.index')->withSuccess($message);
     }
 
     public function acceptRideRequest(Request $request)

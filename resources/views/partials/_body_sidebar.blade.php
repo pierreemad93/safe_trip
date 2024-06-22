@@ -213,7 +213,7 @@
             ->data('permission', 'riderequest list')
             ->prepend('<i class="fas fa-list"></i>')
             ->link->attr(['class' => '']);
-        //ride request booking 
+        //ride request booking
         $menu->riderequest
             ->add('<span>' . __('message.booking_a_ride', ['form' => __('message.riderequest')]) . '</span>', [
                 'class' => 'sidebar-layout',
@@ -222,6 +222,23 @@
             ->data('permission', 'riderequest list')
             ->prepend('<i class="fas fa-plus-square"></i>')
             ->link->attr(['class' => '']);
+        //rent service
+        $menu
+            ->add('<span>' . __('message.rent') . '</span>', ['class' => ''])
+            ->prepend('<i class="fas fa-taxi"></i>')
+            ->nickname('rent')
+            ->data('permission', 'rent service')
+            ->link->attr(['class' => ''])
+            ->href('#rent');
+        $menu->rent
+            ->add('<span>' . __('message.rent', ['form' => __('message.riderequest')]) . '</span>', [
+                'class' => 'sidebar-layout',
+                'route' => 'rent.create',
+            ])
+            ->data('permission', 'riderequest list')
+            ->prepend('<i class="fas fa-plus-square"></i>')
+            ->link->attr(['class' => '']);
+        //complaint
         $menu
             ->add('<span>' . __('message.complaint') . '</span>', ['class' => '', 'route' => 'complaint.index'])
             ->prepend('<i class="fas fa-file-alt"></i>')

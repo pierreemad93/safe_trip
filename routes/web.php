@@ -22,6 +22,8 @@ use App\Http\Controllers\SosController;
 use App\Http\Controllers\WithdrawRequestController;
 
 use App\Http\Controllers\ComplaintCommentController;
+use App\Http\Controllers\RentController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -122,8 +124,13 @@ Route::group(['middleware' => ['auth', 'verified', 'admin']], function () {
     Route::get('map-view', [HomeController::class, 'driverListMap'])->name('driver_list.map');
     Route::get('driver-detail', [HomeController::class, 'driverDetail'])->name('driverdetail');
 
-
     Route::get('driver-earning-list', [DriverController::class, 'driverEarning'])->name('driver.earning.list');
+    //rent service 
+    Route::get('rent', [RentController::class, 'index'])->name('rent.index');
+    Route::get('rent/{id}', [RentController::class, 'show'])->name('rent.show');
+    Route::get('rent/create', [RentController::class, 'create'])->name('rent.create');
+    Route::post('rent', [RentController::class, 'store'])->name('rent.store');
+    Route::delete('rent/{id}', [RentController::class, 'destroy'])->name('rent.destroy');
 });
 
 Route::get('/ajax-list', [HomeController::class, 'getAjaxList'])->name('ajax-list');
