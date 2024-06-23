@@ -56,10 +56,10 @@ class RentController extends Controller
             'production_date' => $request->production_date,
             'type_id' => $request->type
         ];
-        Item::create($data);
-
-        $message = __('message.save_form', ['form' => __('message.riderequest')]);
-        return redirect()->route('riderequest.index')->withSuccess($message);
+        $rent = Item::create($data);
+        $rent->addMedia($request->vehcile_image)->toMediaCollection("rent");
+        $message = __('message.save_form', ['form' => __('message.rent')]);
+        return redirect()->route('rent.index')->withSuccess($message);
     }
 
     /**
@@ -68,9 +68,12 @@ class RentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Item $rent)
     {
-        //
+        // 
+        $rent->load('type');
+        $pageTitle = __('message.rent', ['form' => __('message.show')]);
+        return view('rent.show', compact('pageTitle', 'rent'));
     }
 
     /**

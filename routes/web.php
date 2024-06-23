@@ -127,8 +127,8 @@ Route::group(['middleware' => ['auth', 'verified', 'admin']], function () {
     Route::get('driver-earning-list', [DriverController::class, 'driverEarning'])->name('driver.earning.list');
     //rent service 
     Route::get('rent', [RentController::class, 'index'])->name('rent.index');
-    Route::get('rent/{id}', [RentController::class, 'show'])->name('rent.show');
     Route::get('rent/create', [RentController::class, 'create'])->name('rent.create');
+    Route::get('rent/{rent}', [RentController::class, 'show'])->name('rent.show');
     Route::post('rent', [RentController::class, 'store'])->name('rent.store');
     Route::delete('rent/{id}', [RentController::class, 'destroy'])->name('rent.destroy');
 });

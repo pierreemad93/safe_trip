@@ -86,7 +86,7 @@
                                 <div class="form-group col-md-4">
                                     <label class="form-control-label" for="image">{{ __('message.image') }} </label>
                                     <div class="custom-file">
-                                        <input type="file" name="service_image" class="custom-file-input"
+                                        <input type="file" name="vehcile_image" class="custom-file-input"
                                             accept="image/*">
                                         <label
                                             class="custom-file-label">{{ __('message.choose_file', ['file' => __('message.image')]) }}</label>
