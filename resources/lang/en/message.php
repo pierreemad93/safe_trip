@@ -73,6 +73,8 @@ return array(
     'production_date' => 'Production date',
     'color' => 'Color',
     'model' => 'Model',
+    'price' => 'Price',
+    'discount' => 'Discount',
     'admin' => 'Admin',
     'information' => 'Information',
     'first_name' => 'First Name',
@@ -81,6 +83,7 @@ return array(
     'ID' => 'National ID',
     'personal_license' => 'Personal License',
     'passport' => "Passport",
+
     'setting' => 'Setting',
     'dashboard' => 'Dashboard',
     'active' => 'Active',

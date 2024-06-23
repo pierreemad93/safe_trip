@@ -47,6 +47,7 @@ class RentController extends Controller
     public function store(Request $request)
     {
         //
+        $selling_price = $request->price - ($request->price * ($request->discount / 100));
         $data = [
             'name' => $request->name,
             'brand' => $request->brand,
@@ -54,7 +55,10 @@ class RentController extends Controller
             'color' => $request->color,
             'plate_number' => $request->plate_number,
             'production_date' => $request->production_date,
-            'type_id' => $request->type
+            'type_id' => $request->type,
+            'price' => $request->price,
+            'discount' => $request->discount ,
+            'price_after_discount' => $selling_price
         ];
         $rent = Item::create($data);
         $rent->addMedia($request->vehcile_image)->toMediaCollection("rent");

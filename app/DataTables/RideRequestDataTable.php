@@ -48,10 +48,8 @@ class RideRequestDataTable extends DataTable
             })
 
             ->editColumn('payment_status', function ($riderequest) {
-
                 $status = 'warning';
                 $payment_status = isset($riderequest->payment) ? $riderequest->payment->payment_status : __('message.pending');
-
                 switch ($payment_status) {
                     case 'pending':
                         $status = 'warning';
@@ -65,7 +63,6 @@ class RideRequestDataTable extends DataTable
                 }
                 return '<span class="text-capitalize badge bg-' . $status . '">' . $payment_status . '</span>';
             })
-
             ->filterColumn('payment_status', function ($query, $keyword) {
                 $query->whereHas('payment', function ($q) use ($keyword) {
                     $q->where('payment_status', 'like', '%' . $keyword . '%');

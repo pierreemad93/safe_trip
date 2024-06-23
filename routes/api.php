@@ -102,7 +102,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('rent-vehicle/list', [API\ItemController::class, 'listVehcile']);
     Route::post('rent-vehicle/rent', [API\ItemController::class, 'rentVehcile']);
     Route::post('rent-vehicle/rent/create', [API\ItemController::class, 'create']);
-    
 });
 
 Route::get('place-autocomplete-api', [API\RideRequestController::class, 'placeAutoComplete']);

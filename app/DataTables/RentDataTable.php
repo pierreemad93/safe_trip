@@ -9,8 +9,11 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
+use App\Traits\DataTableTrait;
+
 class RentDataTable extends DataTable
 {
+    use DataTableTrait;
     /**
      * Build DataTable class.
      *
@@ -34,6 +37,11 @@ class RentDataTable extends DataTable
             })
             ->filterColumn('production_date', function ($query, $keyword) {
                 $query->where('production_date', 'like', '%' . $keyword . '%');
+            })
+            ->editColumn('discount', function ($rent) {
+                if ($rent->discount !== null) {
+                    return '<span class="badge badge-success">' . $rent->discount . '% </span>';
+                }
             });
     }
 
@@ -91,6 +99,7 @@ class RentDataTable extends DataTable
             Column::make('color')->title(__('message.color')),
             Column::make('plate_number')->title(__('message.plate_number')),
             Column::make('production_date')->title(__('message.production_date')),
+            Column::make('discount')->title(__('message.discount')),
             // Column::make('created_at'),
             // Column::make('updated_at'),
             Column::computed('action')

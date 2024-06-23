@@ -74,15 +74,27 @@
                                         <option value="yellow">Yellow</option>
                                     </select>
                                 </div>
+                                {{-- Plate number --}}
                                 <div class="form-group col-md-4">
                                     {{ Form::label('plate_number', __('message.plate_number') . ' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
-                                    {{ Form::text('plate_number', old('plate_number'), ['placeholder' => __('message.name'), 'class' => 'form-control', 'required']) }}
+                                    {{ Form::text('plate_number', old('plate_number'), ['placeholder' => __('message.plate_number'), 'class' => 'form-control', 'required']) }}
                                 </div>
+                                {{-- Production date --}}
                                 <div class="form-group col-md-4">
                                     {{ Form::label('production_date', __('message.production_date') . ' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
-                                    {{ Form::text('production_date', old('production_date'), ['placeholder' => __('message.name'), 'class' => 'form-control', 'required']) }}
+                                    {{ Form::text('production_date', old('production_date'), ['placeholder' => __('message.production_date'), 'class' => 'form-control', 'required']) }}
                                 </div>
+                                {{-- Price --}}
+                                <div class="form-group col-md-4">
+                                    {{ Form::label('price', __('message.price') . ' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
+                                    {{ Form::number('price', old('price'), ['min' => 0, 'placeholder' => __('message.price'), 'class' => 'form-control', 'required']) }}
 
+                                </div>
+                                <div class="form-group col-md-4">
+                                    {{ Form::label('discount', __('message.discount') . ' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
+                                    {{ Form::number('discount', old('discount'), ['min' => 0, 'placeholder' => __('message.discount'), 'class' => 'form-control']) }}
+                                </div>
+                                {{-- Image --}}
                                 <div class="form-group col-md-4">
                                     <label class="form-control-label" for="image">{{ __('message.image') }} </label>
                                     <div class="custom-file">

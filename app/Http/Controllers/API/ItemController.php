@@ -20,7 +20,6 @@ class ItemController extends Controller
      */
     public function listTypes()
     {
-
         $types = Type::with("items")->get();
         return json_custom_response($types);
     }

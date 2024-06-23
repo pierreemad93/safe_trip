@@ -122,6 +122,31 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="card card-block">
+                            <div class="card-body">
+                                <div class="top-block-one">
+                                    <div class="">
+                                        <p class="mb-1 ">
+                                            {{ __('message.price') }}
+                                            @if ($rent->discount !== null)
+                                                <span class="badge badge-success">{{ __('message.discount') }}
+                                                    {{ $rent->discount }} %</span>
+                                            @endif
+                                        </p>
+                                        <p></p>
+
+                                        @if ($rent->discount !== null)
+                                            <h5><s>{{ $rent->price }} </s> </h5>
+                                            <h5>{{ $rent->price_after_discount }} </h5>
+                                        @else
+                                            <h5>{{ $rent->price }}</h5>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {{-- <div class="row">
                     <div class="card card-block">
