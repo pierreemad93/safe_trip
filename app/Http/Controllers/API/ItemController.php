@@ -46,8 +46,8 @@ class ItemController extends Controller
     {
         //
         $rent = Rent::create([
-            'name' => Auth::user()->display_name,
-            'contact_number' => Auth::user()->contact_number,
+            'name' => $request->name,
+            'contact_number' => $request->name,
             'item_id' => $request->item_id
         ]);
         $rent->addMedia($request->ID)->toMediaCollection("rent");

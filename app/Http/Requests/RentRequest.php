@@ -29,9 +29,11 @@ class RentRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'ID' => 'required|image',
-            'personal_license' => 'required|image',
-            'passport' => 'required|image',
+            'name' => 'required',
+            'contact_number' => 'required',
+            'ID' => 'image',
+            'personal_license' => 'image',
+            'passport' => 'image',
         ];
         return  $rules;
     }
