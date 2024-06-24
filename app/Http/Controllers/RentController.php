@@ -47,6 +47,10 @@ class RentController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'plate_number' => 'unique:items,plate_number'
+
+        ]);
         $selling_price = $request->price - ($request->price * ($request->discount / 100));
         $data = [
             'name' => $request->name,
@@ -57,7 +61,7 @@ class RentController extends Controller
             'production_date' => $request->production_date,
             'type_id' => $request->type,
             'price' => $request->price,
-            'discount' => $request->discount ,
+            'discount' => $request->discount,
             'price_after_discount' => $selling_price
         ];
         $rent = Item::create($data);

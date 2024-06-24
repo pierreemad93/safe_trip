@@ -23,7 +23,7 @@
                             <div class="row">
                                 {{-- types --}}
                                 <div class="form-group col-md-4">
-                                    {{ Form::label('commission_type', __('message.commission_type'), ['class' => 'form-control-label']) }}
+                                    {{ Form::label('type', __('message.type'), ['class' => 'form-control-label']) }}
                                     <select class="form-control select2js" onchange="fetch_select(this.value);"
                                         name="type" required>
                                         <option value=""></option>
