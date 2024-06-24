@@ -48,6 +48,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('riderequest-list', [API\RideRequestController::class, 'getList']);
     Route::get('riderequest-detail', [API\RideRequestController::class, 'getDetail']);
     Route::post('riderequest-delete/{id}', [App\Http\Controllers\RideRequestController::class, 'destroy']);
+    Route::post('schedule-ride', [App\Http\Controllers\API\RideRequestController::class, 'scheduleRide']);
+
     Route::get('coupon-list', [API\CouponController::class, 'getList']);
 
     Route::post('riderequest-respond', [App\Http\Controllers\RideRequestController::class, 'acceptRideRequest']);

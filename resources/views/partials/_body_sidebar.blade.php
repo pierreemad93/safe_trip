@@ -241,7 +241,7 @@
             ->link->attr(['class' => '']);
 
         $menu->rent
-            ->add('<span>' . __('message.rent', ['form' => __('message.riderequest')]) . '</span>', [
+            ->add('<span>' . __('message.add_form_title', ['form' => __('message.rent')]) . '</span>', [
                 'class' => 'sidebar-layout',
                 'route' => 'rent.create',
             ])

@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\RideRequest;
-use App\Models\RideRequestRating;
-use App\Models\Coupon;
-use App\Http\Resources\RideRequestResource;
-use App\Http\Resources\ComplaintResource;
+use Validator;
 use Carbon\Carbon;
+use App\Models\Coupon;
 use App\Models\Payment;
 use App\Jobs\NotifyViaMqtt;
+use App\Models\RideRequest;
+use Illuminate\Http\Request;
+use App\Models\RideRequestRating;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-use Validator;
+use App\Http\Resources\ComplaintResource;
+use App\Http\Resources\RideRequestResource;
 
 class RideRequestController extends Controller
 {
@@ -369,5 +370,23 @@ class RideRequestController extends Controller
         $response = Http::get('https://maps.googleapis.com/maps/api/place/details/json?placeid=' . $request->placeid . '&key=' . $google_map_api_key);
 
         return $response->json();
+    }
+
+    public function scheduleRide(Request $request)
+    {
+        $data = [
+            'rider_id' => Auth::user()->id,
+            'datetime'  => $request->datetime,
+            'is_schedule' => 1,
+            'start_address' =>  $request->start_address,
+            'end_address' => $request->end_address,
+        ];
+        $scheduleRide = RideRequest::create($data);
+        $message = __('message.save_form', ['form' => __('message.schedule_ride')]);
+        $response = [
+            'message' => $message,
+            'data' =>    $scheduleRide
+        ];
+        return json_custom_response($response);
     }
 }

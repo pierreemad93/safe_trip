@@ -38,6 +38,6 @@ class SechduleRideRequest extends Command
      */
     public function handle()
     {
-        $rideRequest = RideRequest::all();
+        $rideRequest = RideRequest::where('is_schedule', 1)->get();
     }
 }

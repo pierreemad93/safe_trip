@@ -38,10 +38,16 @@ class RentDataTable extends DataTable
             ->filterColumn('production_date', function ($query, $keyword) {
                 $query->where('production_date', 'like', '%' . $keyword . '%');
             })
+            ->filterColumn('discount', function ($query, $keyword) {
+                $query->where('discount', 'like', '%' . $keyword . '%');
+            })
             ->editColumn('discount', function ($rent) {
                 if ($rent->discount !== null) {
-                    return '<span class="badge badge-success">' . $rent->discount . '% </span>';
+                    return  $rent->discount . " %";
                 }
+            })
+            ->editColumn('type_id', function ($query) {
+                return $query->type->name;
             });
     }
 
