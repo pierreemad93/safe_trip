@@ -24,14 +24,14 @@ class DriverController extends Controller
      */
     public function index(DriverDataTable $dataTable)
     {
-        $pageTitle = __('message.list_form_title',['form' => __('message.driver')] );
+        $pageTitle = __('message.list_form_title', ['form' => __('message.driver')]);
         $auth_user = authSession();
-        if(!empty(request('status'))) {
-            $pageTitle = __('message.pending_list_form_title',['form' => __('message.driver')] );
+        if (!empty(request('status'))) {
+            $pageTitle = __('message.pending_list_form_title', ['form' => __('message.driver')]);
         }
         $assets = ['datatable'];
-        $button = $auth_user->can('driver add') ? '<a href="'.route('driver.create').'" class="float-right btn btn-sm btn-primary"><i class="fa fa-plus-circle"></i> '.__('message.add_form_title',['form' => __('message.driver')]).'</a>' : '';
-        return $dataTable->with('status', request('status'))->render('global.datatable', compact('assets','pageTitle','button','auth_user'));
+        $button = $auth_user->can('driver add') ? '<a href="' . route('driver.create') . '" class="float-right btn btn-sm btn-primary"><i class="fa fa-plus-circle"></i> ' . __('message.add_form_title', ['form' => __('message.driver')]) . '</a>' : '';
+        return $dataTable->with('status', request('status'))->render('global.datatable', compact('assets', 'pageTitle', 'button', 'auth_user'));
     }
 
     /**
@@ -41,10 +41,10 @@ class DriverController extends Controller
      */
     public function create()
     {
-        $pageTitle = __('message.add_form_title',[ 'form' => __('message.driver')]);
+        $pageTitle = __('message.add_form_title', ['form' => __('message.driver')]);
         $assets = ['phone'];
         // $selected_service = [];
-        return view('driver.form', compact('pageTitle','assets'));
+        return view('driver.form', compact('pageTitle', 'assets'));
     }
 
     /**
@@ -56,24 +56,23 @@ class DriverController extends Controller
     public function store(DriverRequest $request)
     {
         $request['password'] = bcrypt($request->password);
-
-        $request['username'] = $request->username ?? stristr($request->email, "@", true) . rand(100,1000);
-        $request['display_name'] = $request->first_name.' '. $request->last_name;
+        $request['username'] = $request->username ?? stristr($request->email, "@", true) . rand(100, 1000);
+        $request['display_name'] = $request->first_name . ' ' . $request->last_name;
         $request['user_type'] = 'driver';
 
-        if(auth()->user()->hasRole('fleet')) {
+        if (auth()->user()->hasRole('fleet')) {
             $request['fleet_id'] = auth()->user()->id;
         }
         $user = User::create($request->all());
 
-        uploadMediaFile($user,$request->profile_image, 'profile_image');
+        uploadMediaFile($user, $request->profile_image, 'profile_image');
         $user->assignRole('driver');
         // Save Driver detail...
         $user->userDetail()->create($request->userDetail);
         $user->userBankAccount()->create($request->userBankAccount);
-        
-        $user->userWallet()->create(['total_amount' => 0 ]);
-/*
+
+        $user->userWallet()->create(['total_amount' => 0]);
+        /*
         if($user->driverService()->count() > 0)
         {
             $user->driverService()->delete();
@@ -100,31 +99,31 @@ class DriverController extends Controller
      */
     public function show(WalletHistoryDataTable $dataTable, $id)
     {
-        $pageTitle = __('message.view_form_title',[ 'form' => __('message.driver')]);
-        $data = User::where('user_type', 'driver')->with('roles','userDetail', 'userBankAccount')->findOrFail($id);
-        $data->rating = count($data->driverRating) > 0 ? (float) number_format(max($data->driverRating->avg('rating'),0), 2) : 0;
+        $pageTitle = __('message.view_form_title', ['form' => __('message.driver')]);
+        $data = User::where('user_type', 'driver')->with('roles', 'userDetail', 'userBankAccount')->findOrFail($id);
+        $data->rating = count($data->driverRating) > 0 ? (float) number_format(max($data->driverRating->avg('rating'), 0), 2) : 0;
 
-        $data->cash_earning = Payment::whereHas('riderequest',function ($q) use($id) {
-                $q->where('driver_id',$id);
-            })->where('payment_status', 'paid')->where('payment_type', 'cash')->value(DB::raw('SUM(admin_commission + driver_commission)')) ?? 0;
-        
-        $data->admin_commission = Payment::whereHas('riderequest',function ($q) use($id) {
+        $data->cash_earning = Payment::whereHas('riderequest', function ($q) use ($id) {
+            $q->where('driver_id', $id);
+        })->where('payment_status', 'paid')->where('payment_type', 'cash')->value(DB::raw('SUM(admin_commission + driver_commission)')) ?? 0;
+
+        $data->admin_commission = Payment::whereHas('riderequest', function ($q) use ($id) {
             $q->where('driver_id', $id);
         })->where('payment_status', 'paid')->sum('admin_commission') ?? 0;
 
-        $data->wallet_earning = Payment::whereHas('riderequest',function ($q) use($id) {
-                $q->where('driver_id',$id);
-            })->where('payment_status', 'paid')->where('payment_type', 'wallet')->sum('driver_commission') ?? 0;
-        
+        $data->wallet_earning = Payment::whereHas('riderequest', function ($q) use ($id) {
+            $q->where('driver_id', $id);
+        })->where('payment_status', 'paid')->where('payment_type', 'wallet')->sum('driver_commission') ?? 0;
+
         $data->total_earning = $data->cash_earning + $data->wallet_earning;
 
-        $data->driver_earning = Payment::whereHas('riderequest',function ($q) use($id) {
+        $data->driver_earning = Payment::whereHas('riderequest', function ($q) use ($id) {
             $q->where('driver_id', $id);
         })->where('payment_status', 'paid')->sum('driver_commission') ?? 0;
 
         $profileImage = getSingleMedia($data, 'profile_image');
 
-        return $dataTable->with('user_id',$id)->render('driver.show', compact('pageTitle', 'data', 'profileImage', 'pageTitle' ));
+        return $dataTable->with('user_id', $id)->render('driver.show', compact('pageTitle', 'data', 'profileImage', 'pageTitle'));
     }
 
     /**
@@ -135,12 +134,12 @@ class DriverController extends Controller
      */
     public function edit($id)
     {
-        $pageTitle = __('message.update_form_title',[ 'form' => __('message.driver')]);
-        $data = User::where('user_type', 'driver')->with('userDetail','userBankAccount')->findOrFail($id);
+        $pageTitle = __('message.update_form_title', ['form' => __('message.driver')]);
+        $data = User::where('user_type', 'driver')->with('userDetail', 'userBankAccount')->findOrFail($id);
 
         $profileImage = getSingleMedia($data, 'profile_image');
         $assets = ['phone'];
-/* 
+        /* 
         $selected_service = $data->driverService->mapWithKeys(function ($item) {
             return [ $item->service_id => optional($item->service)->name ];
         });
@@ -158,12 +157,12 @@ class DriverController extends Controller
     public function update(DriverRequest $request, $id)
     {
         $user = User::with('userDetail')->findOrFail($id);
-        
+
         $request['password'] = $request->password != '' ? bcrypt($request->password) : $user->password;
 
-        $request['display_name'] = $request->first_name.' '. $request->last_name;
+        $request['display_name'] = $request->first_name . ' ' . $request->last_name;
 
-        if(auth()->user()->hasRole('fleet')) {
+        if (auth()->user()->hasRole('fleet')) {
             $request['fleet_id'] = auth()->user()->id;
         }
         // User user data...
@@ -175,13 +174,13 @@ class DriverController extends Controller
             $user->addMediaFromRequest('profile_image')->toMediaCollection('profile_image');
         }
 
-        if($user->userDetail != null) {
+        if ($user->userDetail != null) {
             $user->userDetail->fill($request->userDetail)->update();
         } else {
             $user->userDetail()->create($request->userDetail);
         }
 
-        if($user->userBankAccount != null) {
+        if ($user->userBankAccount != null) {
             $user->userBankAccount->fill($request->userBankAccount)->update();
         } else {
             $user->userBankAccount()->create($request->userBankAccount);
@@ -204,10 +203,10 @@ class DriverController extends Controller
         }
         */
 
-        if(auth()->check()){
-            return redirect()->route('driver.index')->withSuccess(__('message.update_form',['form' => __('message.driver')]));
+        if (auth()->check()) {
+            return redirect()->route('driver.index')->withSuccess(__('message.update_form', ['form' => __('message.driver')]));
         }
-        return redirect()->back()->withSuccess(__('message.update_form',['form' => __('message.driver') ] ));
+        return redirect()->back()->withSuccess(__('message.update_form', ['form' => __('message.driver')]));
     }
 
     /**
@@ -218,10 +217,10 @@ class DriverController extends Controller
      */
     public function destroy($id)
     {
-        if(env('APP_DEMO')){
+        if (env('APP_DEMO')) {
             $message = __('message.demo_permission_denied');
-            if(request()->ajax()) {
-                return response()->json(['status' => true, 'message' => $message ]);
+            if (request()->ajax()) {
+                return response()->json(['status' => true, 'message' => $message]);
             }
             return redirect()->route('driver.index')->withErrors($message);
         }
@@ -229,27 +228,27 @@ class DriverController extends Controller
         $status = 'errors';
         $message = __('message.not_found_entry', ['name' => __('message.driver')]);
 
-        if($user!='') {
+        if ($user != '') {
             $user->delete();
             $status = 'success';
             $message = __('message.delete_form', ['form' => __('message.driver')]);
         }
 
-        if(request()->ajax()) {
-            return response()->json(['status' => true, 'message' => $message ]);
+        if (request()->ajax()) {
+            return response()->json(['status' => true, 'message' => $message]);
         }
 
-        return redirect()->back()->with($status,$message);
+        return redirect()->back()->with($status, $message);
     }
 
     public function driverEarning(DriverEarningDataTable $dataTable)
     {
-        $pageTitle = __('message.list_form_title',['form' => __('message.driver_earning')] );
+        $pageTitle = __('message.list_form_title', ['form' => __('message.driver_earning')]);
         $auth_user = authSession();
-        
+
         $button = '';
         $assets = ['datatable'];
-        
-        return $dataTable->render('global.datatable', compact('pageTitle','button','auth_user'));
+
+        return $dataTable->render('global.datatable', compact('pageTitle', 'button', 'auth_user'));
     }
 }

@@ -1,9 +1,9 @@
 <x-master-layout :assets="$assets ?? []">
     <div>
-        <?php $id = $id ?? null; ?>
+        @php $id = $rent->id ?? null; @endphp
         @if (isset($id))
-            {!! Form::model($data, [
-                'route' => ['service.update', $id],
+            {!! Form::model($rent, [
+                'route' => ['service.update', $rent->id],
                 'method' => 'patch',
                 'enctype' => 'multipart/form-data',
             ]) !!}
@@ -24,11 +24,10 @@
                                 {{-- types --}}
                                 <div class="form-group col-md-4">
                                     {{ Form::label('type', __('message.type'), ['class' => 'form-control-label']) }}
-                                    <select class="form-control select2js" onchange="fetch_select(this.value);"
-                                        name="type" required>
+                                    <select class="form-control select2js" onchange="fetch_select(this.value);" name="type" required>
                                         <option value=""></option>
                                         @foreach ($types as $type)
-                                            <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                            <option value="{{ $type->id }}"  >{{ $type->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -37,8 +36,7 @@
                                     <label class="form-control-label"> {{ __('message.type_of') }}
                                         <span id="print-ajax"></span>
                                     </label>
-                                    <select class="form-control select2js" id="model_types" name="model"
-                                        required></select>
+                                    <select class="form-control select2js" id="model_types" name="model" required></select>
                                 </div>
                                 <div class="form-group col-md-4">
                                     {{ Form::label('brand', __('message.brand'), ['class' => 'form-control-label']) }}
@@ -91,7 +89,7 @@
 
                                 </div>
                                 <div class="form-group col-md-4">
-                                    {{ Form::label('discount', __('message.discount') . ' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
+                                    {{ Form::label('discount', __('message.discount'), ['class' => 'form-control-label'], false) }}
                                     {{ Form::number('discount', old('discount'), ['min' => 0, 'placeholder' => __('message.discount'), 'class' => 'form-control']) }}
                                 </div>
                                 {{-- Image --}}
@@ -106,7 +104,7 @@
                                     <span class="selected_file"></span>
                                 </div>
 
-                                @if (isset($id) && getMediaFileExit($data, 'service_image'))
+                                {{-- @if (isset($id) && getMediaFileExit($data, 'service_image'))
                                     <div class="col-md-2 mb-2">
                                         <img id="service_image_preview"
                                             src="{{ getSingleMedia($data, 'service_image') }}" alt="service-image"
@@ -121,7 +119,7 @@
                                             <i class="ri-close-circle-line"></i>
                                         </a>
                                     </div>
-                                @endif
+                                @endif --}}
                                 <div class="form-group col-md-6">
                                     {{ Form::label('description', __('message.description'), ['class' => 'form-control-label']) }}
                                     {{ Form::textarea('description', null, ['class' => 'form-control textarea', 'rows' => 3, 'placeholder' => __('message.description')]) }}

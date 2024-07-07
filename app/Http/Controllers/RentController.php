@@ -7,6 +7,7 @@ use App\Models\Type;
 use Illuminate\Http\Request;
 use App\DataTables\RentDataTable;
 use App\Models\Notification;
+use App\Models\Rent;
 
 class RentController extends Controller
 {
@@ -90,9 +91,11 @@ class RentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Item $rent)
     {
         //
+        $pageTitle = __('message.update_form_title', ['form' => __('message.rent')]);
+        return view('rent.form', compact('pageTitle', 'rent'));
     }
 
     /**
