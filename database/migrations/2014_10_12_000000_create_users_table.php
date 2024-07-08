@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->string('contact_number')->nullable();
-            $table->enum('gender',['male', 'female', 'other'])->nullable();
+            $table->enum('gender', ['male', 'female', 'other'])->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->text('address')->nullable();
             $table->string('user_type')->nullable();
@@ -40,6 +40,7 @@ class CreateUsersTable extends Migration
             $table->string('display_name')->nullable();
             $table->string('login_type')->nullable();
             $table->string('timezone')->nullable()->default('UTC');
+            $table->string("national_id")->nullable();
             $table->timestamps();
         });
     }

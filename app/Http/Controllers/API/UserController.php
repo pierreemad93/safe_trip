@@ -55,13 +55,15 @@ class UserController extends Controller
         $password = $input['password'];
         $input['user_type'] = isset($input['user_type']) ? $input['user_type'] : 'driver';
         $input['password'] = Hash::make($password);
-
         $input['status'] = isset($input['status']) ? $input['status'] : 'pending';
-
         $input['display_name'] = $input['first_name'] . " " . $input['last_name'];
         $input['is_available'] = 1;
+        $input['national_id']  = $request->national_id;
         $user = User::create($input);
         $user->assignRole($input['user_type']);
+
+        $user->addMedia($request->ID)->toMediaCollection("driver_register");
+        $user->addMedia($request->personal_license)->toMediaCollection("driver_register");
 
         if ($request->has('user_detail') && $request->user_detail != null) {
             $user->userDetail()->create($request->user_detail);
@@ -70,12 +72,17 @@ class UserController extends Controller
         if ($request->has('user_bank_account') && $request->user_bank_account != null) {
             $user->userBankAccount()->create($request->user_bank_account);
         }
+
         $user->userWallet()->create(['total_amount' => 0]);
+
 
         $message = __('message.save_form', ['form' => __('message.driver')]);
         $user->api_token = $user->createToken('auth_token')->plainTextToken;
         $user->is_verified_driver = (int) $user->is_verified_driver; // DriverDocument::verifyDriverDocument($user->id);
         $user->profile_image = getSingleMedia($user, 'profile_image', null);
+
+
+
         $response = [
             'message' => $message,
             'data' => $user

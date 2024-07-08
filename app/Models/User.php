@@ -21,7 +21,33 @@ class User extends Authenticatable implements HasMedia
      * @var array<int, string>
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'username', 'contact_number', 'gender', 'email_verified_at', 'address', 'user_type', 'player_id', 'fcm_token', 'fleet_id', 'latitude', 'longitude', 'last_notification_seen', 'status', 'is_online', 'is_available', 'uid', 'login_type', 'display_name', 'timezone', 'service_id', 'is_verified_driver', 'last_location_update_at'
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+        'username',
+        'contact_number',
+        'gender',
+        'email_verified_at',
+        'address',
+        'user_type',
+        'player_id',
+        'fcm_token',
+        'fleet_id',
+        'latitude',
+        'longitude',
+        'last_notification_seen',
+        'status',
+        'is_online',
+        'is_available',
+        'uid',
+        'login_type',
+        'display_name',
+        'timezone',
+        'service_id',
+        'is_verified_driver',
+        'last_location_update_at',
+        'national_id',
     ];
 
     /**
@@ -44,65 +70,76 @@ class User extends Authenticatable implements HasMedia
         'is_available'  => 'integer',
         'service_id'        => 'integer',
         'fleet_id'          => 'integer',
-        'is_verified_driver'=> 'integer',
+        'is_verified_driver' => 'integer',
         'is_online'         => 'integer',
         'last_location_update_at'   => 'datetime',
     ];
 
-    public function userDetail() {
+    public function userDetail()
+    {
         return $this->hasOne(UserDetail::class, 'user_id', 'id');
     }
 
-    public function userBankAccount() {
+    public function userBankAccount()
+    {
         return $this->hasOne(UserBankAccount::class, 'user_id', 'id');
     }
 
-    public function fleet() {
+    public function fleet()
+    {
         return $this->belongsTo(User::class, 'fleet_id', 'id');
     }
 
-    public function userWallet() {
+    public function userWallet()
+    {
         return $this->hasOne(Wallet::class, 'user_id', 'id');
     }
 
-    public function scopeAdmin($query) {
+    public function scopeAdmin($query)
+    {
         return $query->where('user_type', 'admin')->first();
     }
 
-    public function scopeGetUser($query, $user_type=null)
+    public function scopeGetUser($query, $user_type = null)
     {
         $auth_user = auth()->user();
 
-        if( $auth_user->hasAnyRole(['admin']) ) {
-            $query->where('user_type', $user_type)->where('status','active');
+        if ($auth_user->hasAnyRole(['admin'])) {
+            $query->where('user_type', $user_type)->where('status', 'active');
             return $query;
         }
-        if( $auth_user->hasRole('fleet') ) {
+        if ($auth_user->hasRole('fleet')) {
             return $query->where('user_type', 'driver')->where('fleet_id', $auth_user->id);
         }
     }
 
-    public function riderRideRequestDetail() {
+    public function riderRideRequestDetail()
+    {
         return $this->hasMany(RideRequest::class, 'rider_id', 'id');
     }
 
-    public function driverRideRequestDetail() {
+    public function driverRideRequestDetail()
+    {
         return $this->hasMany(RideRequest::class, 'driver_id', 'id');
     }
 
-    public function driverDocument(){
+    public function driverDocument()
+    {
         return $this->hasMany(DriverDocument::class, 'driver_id', 'id');
     }
 
-    public function service() {
+    public function service()
+    {
         return $this->belongsTo(Service::class, 'service_id', 'id');
     }
 
-    public function riderRating(){
+    public function riderRating()
+    {
         return $this->hasMany(RideRequestRating::class, 'rider_id', 'id');
     }
 
-    public function driverRating(){
+    public function driverRating()
+    {
         return $this->hasMany(RideRequestRating::class, 'driver_id', 'id');
     }
 
@@ -116,11 +153,13 @@ class User extends Authenticatable implements HasMedia
         return $this->fcm_token;
     }
 
-    public function userWithdraw(){
+    public function userWithdraw()
+    {
         return $this->hasMany(WithdrawRequest::class, 'user_id', 'id');
     }
 
-    protected static function boot(){
+    protected static function boot()
+    {
         parent::boot();
         static::deleted(function ($row) {
             $row->userDetail()->delete();
@@ -142,15 +181,16 @@ class User extends Authenticatable implements HasMedia
         });
     }
 
-    public function getPayment(){
-        
-        return $this->hasManyThrough( 
+    public function getPayment()
+    {
+
+        return $this->hasManyThrough(
             Payment::class,
             RideRequest::class,
             'driver_id',
             'ride_request_id',
             'id',
             'id'
-        )->where('payment_status','paid');
+        )->where('payment_status', 'paid');
     }
 }
