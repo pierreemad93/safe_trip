@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
+use Illuminate\Http\Request;
 use App\Http\Controllers\API;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RiderDocumentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('driver-document-save', [App\Http\Controllers\DriverDocumentController::class, 'store']);
     Route::post('driver-document-update/{id}', [App\Http\Controllers\DriverDocumentController::class, 'update']);
     Route::post('driver-document-delete/{id}', [App\Http\Controllers\DriverDocumentController::class, 'destroy']);
+
+    Route::get('rider-document-list', [API\RiderDocumentController::class, 'getList']);
+    Route::post('rider-document-save', [App\Http\Controllers\RiderDocumentController::class, 'store']);
+    Route::post('rider-document-update/{id}', [App\Http\Controllers\RiderDocumentController::class, 'update']);
+    Route::post('rider-document-delete/{id}', [App\Http\Controllers\RiderDocumentController::class, 'destroy']);
 
     Route::post('verify-coupon', [API\RideRequestController::class, 'verifyCoupon']);
     Route::post('save-riderequest', [App\Http\Controllers\RideRequestController::class, 'store']);
