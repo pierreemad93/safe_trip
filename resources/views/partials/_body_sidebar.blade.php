@@ -7,7 +7,7 @@
             ->add('<span>' . __('message.dashboard') . '</span>', ['route' => 'home'])
             ->prepend('<i class="fas fa-home"></i>')
             ->link->attr(['class' => '']);
-
+        //rider
         $menu
             ->add('<span>' . __('message.rider') . '</span>', ['class' => ''])
             ->prepend('<i class="fas fa-user"></i>')
@@ -34,6 +34,18 @@
             ->prepend('<i class="fas fa-plus-square"></i>')
             ->link->attr(['class' => '']);
 
+        $menu->rider
+            ->add('<span>' . __('message.manage_rider_document') . '</span>', [
+                'class' =>
+                    request()->is('riderdocument') || request()->is('riderdocument/*')
+                        ? 'sidebar-layout active'
+                        : 'sidebar-layout',
+                'route' => 'riderdocument.index',
+            ])
+            ->data('permission', ['riderdocument list'])
+            ->prepend('<i class="fas fa-plus-square"></i>')
+            ->link->attr(['class' => '']);
+        //region
         $menu
             ->add('<span>' . __('message.region') . '</span>', ['class' => ''])
             ->prepend('<i class="fas fa-globe"></i>')

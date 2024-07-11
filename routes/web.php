@@ -1,28 +1,29 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SosController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RentController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\RiderController;
-use App\Http\Controllers\DriverController;
 use App\Http\Controllers\FleetController;
+use App\Http\Controllers\RiderController;
+use App\Http\Controllers\CouponController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\CouponController;
-use App\Http\Controllers\ComplaintController;
-use App\Http\Controllers\RideRequestController;
 use App\Http\Controllers\SettingController;
-use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\AdditionalFeesController;
 use App\Http\Controllers\DocumentController;
-use App\Http\Controllers\DriverDocumentController;
-use App\Http\Controllers\SosController;
-use App\Http\Controllers\WithdrawRequestController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RideRequestController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\RiderDocumentController;
+use App\Http\Controllers\AdditionalFeesController;
 
+use App\Http\Controllers\DriverDocumentController;
+use App\Http\Controllers\WithdrawRequestController;
 use App\Http\Controllers\ComplaintCommentController;
-use App\Http\Controllers\RentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,7 @@ Route::group(['middleware' => ['auth', 'verified', 'admin']], function () {
     Route::resource('additionalfees', AdditionalFeesController::class);
     Route::resource('document', DocumentController::class);
     Route::resource('driverdocument', DriverDocumentController::class);
+    Route::resource('riderdocument', RiderDocumentController::class);
 
 
     Route::resource('riderequest', RideRequestController::class)->except(['edit']);
